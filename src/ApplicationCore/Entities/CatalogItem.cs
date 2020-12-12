@@ -18,12 +18,15 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
         public int CatalogBrandId { get; private set; }
         public CatalogBrand CatalogBrand { get; private set; }
 
+        public string Color { get; private set; }
+
         public CatalogItem(int catalogTypeId, 
             int catalogBrandId, 
             string description, 
             string name, 
             decimal price, 
-            string pictureUri)
+            string pictureUri,
+            string color)
         {
             CatalogTypeId = catalogTypeId;
             CatalogBrandId = catalogBrandId;
@@ -31,17 +34,20 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities
             Name = name;
             Price = price;
             PictureUri = pictureUri;
+            Color = color;
         }
 
-        public void UpdateDetails(string name, string description, decimal price)
+        public void UpdateDetails(string name, string description, decimal price, string color)
         {
             Guard.Against.NullOrEmpty(name, nameof(name));
             Guard.Against.NullOrEmpty(description, nameof(description));
             Guard.Against.NegativeOrZero(price, nameof(price));
+            Guard.Against.NullOrEmpty(color, nameof(color));
 
             Name = name;
             Description = description;
             Price = price;
+            Color = color;
         }
 
         public void UpdateBrand(int catalogBrandId)
