@@ -27,6 +27,8 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
         public DateTimeOffset OrderDate { get; private set; } = DateTimeOffset.Now;
         public Address ShipToAddress { get; private set; }
 
+        private const double TAXRATE = 0.06;
+
         // DDD Patterns comment
         // Using a private collection field, better for DDD Aggregate's encapsulation
         // so OrderItems cannot be added from "outside the AggregateRoot" directly to the collection,
@@ -47,6 +49,27 @@ namespace Microsoft.eShopWeb.ApplicationCore.Entities.OrderAggregate
                 total += item.UnitPrice * item.Units;
             }
             return total;
+        }
+
+        public decimal Tax()
+        {
+            decimal total = Total();
+            decimal taxRate = (decimal)TAXRATE;
+            decimal tax = total * taxRate;
+            return tax;
+        }
+
+        public decimal GrandTotal()
+        {
+            var total = 0m;
+            var tax = 0m;
+            var grandTotal = 0m;
+
+            total = Total();
+            tax = Tax();
+            grandTotal = total + tax;
+            
+            return grandTotal;
         }
     }
 }
